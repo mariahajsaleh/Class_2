@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>class1</title>
+    <style>
+        .beispiel-1 {
+          background-color: blanchedalmond;
+          border: burlywood 4px outset;
+        }
+        .beispiel-2 {
+          background-color: cornflowerblue;
+          border: darkcyan 4px outset;
+        }
+        .beispiel-3 {
+          background-color: darkkhaki;
+          border: darkturquoise 4px outset;
+        }
+      </style>
+</head>
+<body>
+    <main id="inhalt"></main>
+    
+    
+</body>
+<script>
+     /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+       * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+       * Bauplan
+       * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+       * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+      class formular{
+         /* * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * Einstellungen für das Objekt
+         * * * * * * * * * * * * * * * * * * * * * * * * * * */
+        constructor(ziel){
+       // das ziel ,wo das Objekt angelegt werden soll 
+           this._ziel =ziel ;
+       // Liste der Elemente im Objekt
+       this._liste=[];
+       // design Eigenschaft
+       this._design="";
+        }
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * Setter für den Design
+         * * * * * * * * * * * * * * * * * * * * * * * * * * */
+       
+        set design(wert) {
+          if (typeof wert === "string") this._design = wert;
+        }
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * Getter für den Design
+         * * * * * * * * * * * * * * * * * * * * * * * * * * */
+         get design() {
+          return this._design;
+        }
+         /* * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * Methode : Feld anlegen
+         * * * * * * * * * * * * * * * * * * * * * * * * * * */
+         feld(_id, _typ, _text) {
+          let t = "";
+          // *** //
+          if (_text != undefined) {
+            if (typeof _text === "string" || typeof _text === "number")
+              t = _text;
+          }
+          // *** //
+          switch (_typ) {
+            case undefined:
+            case "text":
+              this._liste.push({ id: _id, type: "text", text: t });
+              break;
+            case "zahl":
+              this._liste.push({ id: _id, type: "number", text: t });
+              break;
+            case "datum":
+              this._liste.push({ id: _id, type: "date", text: t });
+              break;
+            case "farbe":
+              this._liste.push({ id: _id, type: "color", text: t });
+              break;
+            case "textfeld":
+              this._liste.push({ id: _id, type: "textarea", text: t });
+              break;
+            case "knopf":
+              this._liste.push({ id: _id, type: "button", text: t });
+              break;
+          }
+        }
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * *
+         * Methode : Erzeugen
+         * * * * * * * * * * * * * * * * * * * * * * * * * * */
+         erzeugen() {
+          if (this._liste.length > 0) {
+            const v = document.getElementById(this._ziel);
+            // *** //
+            if (v) {
+              let s = "";
+              // *** //
+              for (let e of this._liste) {
+                switch (e.type) {
+                  case "text":
+                  case "number":
+                  case "color":
+                  case "date":
+                    s += `<p><label>${e.text}</label></p>
+                          <p><input type = "${e.type}" id = "${e.id}"></p>`;
+                    break;
+                  case "textarea":
+                    s += `<p><label>${e.text}</label></p>
+                          <p><textarea id = "${e.id}"></textarea></p>`;
+                    break;
+                  case "button":
+                    s += `<button id = "${e.id}">${e.text}</button>`;
+                    break;
+                }
+              }
+              // *** //
+              if (this._design != "")
+                v.innerHTML += `<div class = "${this._design}">${s}</div>`;
+              else v.innerHTML += s;
+            }
+          }
+        }
+      }
+      /* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+       * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+       * Instanz anlegen
+       * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+       * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+       const form1 = new formular("inhalt");
+      form1.design = "beispiel-1";
+      form1.feld("f-1", "text", "Vorname");
+      form1.feld("f-2", "text", "Nachname");
+      form1.feld("f-3", "zahl", "Alter");
+      form1.feld("f-4", "datum", "Einstiegsdatum");
+      form1.feld("f-5", "textfeld", "Bemerkungen");
+      form1.feld("f-6", "knopf", "Abschicken");
+      form1.erzeugen();
+       // *** //
+       const form2 = new formular("inhalt");
+      form2.design = "beispiel-2";
+      form2.feld("f-1", "text", "Vorname");
+      form2.feld("f-2", "text", "Nachname");
+      form2.feld("f-3", "zahl", "Alter");
+      form2.feld("f-4", "datum", "Einstiegsdatum");
+      form2.feld("f-5", "textfeld", "Bemerkungen");
+      form2.feld("f-6", "knopf", "Abschicken");
+      form2.erzeugen();
+</script>
+</html>
